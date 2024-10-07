@@ -3,20 +3,21 @@
  */
 class Movie {
     // private vars
-    #id = 0;    // the id of the movie
+    // #id = 0;    // the id of the movie ! we'll take it from the data object
     #data = {};  // for storing the gfetched data object
 
     //constructor method
-    constructor() {
-
+    constructor(movieObject) {
+        // build a new Movie based on the dataObject
+        this.data = movieObject || {};
     }
 
     // getters & setters
     set id(val) {
-        this.#id = val
+        this.#data.id = val
     }
     get id() {
-        return this.#id;
+        return this.#data.id;
     }
     set data(val) {
         this.#data = val
@@ -34,7 +35,7 @@ class MovieList {
     #list = []; // an array for Movies
 
     constructor() {
-
+        // do whatever needed
     }
 
     // getters & setters
@@ -45,8 +46,25 @@ class MovieList {
         return this.#list;
     }
 
+    /**
+     * adds a movie to the list
+     * @param {Movie} movie 
+     */
+    addMovie(movie) {
+        console.log(`movie "${movie.data.original_title}" was added to the MovieList`);
+        this.list.push(movie);
+    }
+
+    /**
+     * gets a movie from the list based on it's ID
+     * @param {Number} id the ID of the movie to get
+     * @returns {Movie} the found movie
+     */
     getMovieById(id) {
-        // TODO: find movie in list and return it
+        // return the first element of the filtered results
+        return this.#list.filter((movie) => {
+            return movie.id === id
+        })[0]
     }
 }
 
@@ -57,6 +75,7 @@ class MovieFavoritesList extends MovieList {
     #localStorageName = '';
 
     constructor() {
+        // initiate the super class (MovieList), so this has everything from there
         super();
     }
 
@@ -66,24 +85,6 @@ class MovieFavoritesList extends MovieList {
     }
     get localStorageName() {
         return this.#localStorageName;
-    }
-
-    /**
-      * do something with a Movie instance
-      * @param {Movie} movie a Movie instance
-      * @returns something
-      */
-    doSomethingWithAMovie(movie) {
-        outString = 'nothing special';
-        return outString;
-    }
-
-    /**
-     * adds a movie to the list
-     * @param {Movie} movie 
-     */
-    addMovie(movie) {
-        this.list.push(movie);
     }
 
     /**
@@ -110,6 +111,7 @@ class Main {
     #apiKey = '';
     #pathToTmdb = '';
     #pathToImages = '';
+    #initialCall = '';
     #localStorageName = '';
 
     #movielist = new MovieList();
@@ -142,6 +144,13 @@ class Main {
         return this.#pathToImages
     }
 
+    set initialCall(val) {
+        this.#initialCall = val
+    }
+    get initialCall() {
+        return this.#initialCall
+    }
+
     set localStorageName(val) {
         this.#localStorageName = val;
         // pass the value to the favorites list, too
@@ -150,6 +159,41 @@ class Main {
     get localStorageName() {
         return this.#localStorageName
     }
+
+    /**
+     * the initial fetch from TMDB (retrieves the first page of results based on the initial path)
+     */
+    fetchInitial() {
+        const url = this.#pathToTmdb + this.#initialCall + '&api_key=' + this.#apiKey;
+
+        console.info(`starting to load initial data from ${url}`);
+
+        const results = fetch(url)
+            // when wee get a response from TMDB pass the results on (make a JSON object out of it before)
+            .then(response => response.json())
+            // and then use the response data to to what we need
+            .then(response => {
+                console.info('finished loading initial data')
+                // populate the  MovieList (the actual array of movies is stored in 'results')
+                this.populateMovieList(response.results)
+            })
+            // and show errors if encounteered
+            .catch(err => console.error(err));
+    }
+
+    /**
+     * fill the MovieList with movies
+     * @param {Array} arr the array of movieObjects fetched  before
+     */
+    populateMovieList(arr = []) {
+        console.info('populating the MovieList')
+        arr.forEach(movieObject => {
+            // create new instance of Movie (and pass the data object)
+            const movie = new Movie(movieObject);
+            // add the movie instance to the list
+            this.#movielist.addMovie(movie);
+        })
+    }
 }
 
 // create an instance of Main
@@ -157,6 +201,10 @@ const mainInstance = new Main();
 
 // set initial values
 mainInstance.apiKey = '153a09fbeef547fb0435feeeb75d0140' // use it as url-parameter like 'api_key=153a09fbeef547fb0435feeeb75d0140'
-mainInstance.pathToTmdb = 'https://api.themoviedb.org/3/discover/movie';
+mainInstance.pathToTmdb = 'https://api.themoviedb.org/3/discover/movie'; // the main path to the movies
 mainInstance.pathToImages = 'https://image.tmdb.org/t/p/original'; // see readdme.md for other options
+mainInstance.initialCall = '?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'; // the url params to call first
 mainInstance.localStorageName = 'movieFavs';
+
+// place the initial call 
+mainInstance.fetchInitial();
