@@ -4,7 +4,8 @@
 class Movie {
     // private vars
     // #id = 0;    // the id of the movie ! we'll take it from the data object
-    #data = {};  // for storing the gfetched data object
+    #data = {};  // for storing the fetched data object
+    #details = {} // for storing the fetched detail object
 
     //constructor method
     constructor(movieObject) {
@@ -24,6 +25,32 @@ class Movie {
     }
     get data() {
         return this.#data;
+    }
+
+    set details(val) {
+        this.#details = val
+    }
+    get details() {
+        return this.#details;
+    }
+
+    fetchMovieDetails(){
+        // TODO: fetch the detail data
+        // url-example: 'https://api.themoviedb.org/3/movie/533535?language=en-US&api_key=153a09fbeef547fb0435feeeb75d0140'
+        return details;
+    }
+
+    /**
+     * renders the output
+     * @returns {Element} the element to be displayed
+     */
+    renderView(){
+        // TODO: fetch detail data first!
+
+        // TODO: build output...
+        const test = document.createElement('p');
+        test.textContent = this.data.original_title,' (created by Movie.renderView)';
+        return test;
     }
 }
 
@@ -65,6 +92,41 @@ class MovieList {
         return this.#list.filter((movie) => {
             return movie.id === id
         })[0]
+    }
+
+    /**
+     * renders the output
+     * @returns {Element} the element to be displayed
+     */
+    renderView() {
+        // create list
+        const ul = document.createElement('ul');
+        this.list.forEach((movie) => {
+            const li = document.createElement('li');
+            li.classList = 'flex p-2 pl-3 text-gray-800 bg-white rounded shadow mb-1 justify-between items-center'
+            li.textContent = movie.data.original_title;
+
+            const span = document.createElement('span');
+            span.classList = 'flex gap-2';
+
+            const viewBtn = document.createElement('button');
+            viewBtn.classList = 'movie-button movie-button-green';
+            viewBtn.textContent = 'view';
+            viewBtn.dataset.id = movie.data.id;
+            span.appendChild(viewBtn);
+
+            const addBtn = document.createElement('button');
+            addBtn.classList = 'movie-button movie-button-green';
+            addBtn.textContent = 'add';
+            addBtn.dataset.id = movie.data.id;
+            span.appendChild(addBtn);
+
+            li.appendChild(span);
+
+            ul.appendChild(li);
+        });
+
+        return ul;
     }
 }
 
@@ -114,8 +176,13 @@ class Main {
     #initialCall = '';
     #localStorageName = '';
 
-    #movielist = new MovieList();
+    #movieList = new MovieList();
     #movieFavoritesList = new MovieFavoritesList();
+
+    #movieListView;
+    #movieFavoritesListView;
+    #detailView;
+
 
     constructor() {
         // do important things
@@ -151,6 +218,17 @@ class Main {
         return this.#initialCall
     }
 
+    set movieListView(val) {
+        this.#movieListView = val;
+    }
+    set movieFavoritesListView(val) {
+        this.#movieFavoritesListView = val;
+    }
+    set detailView(val) {
+        this.#detailView = val;
+    }
+
+
     set localStorageName(val) {
         this.#localStorageName = val;
         // pass the value to the favorites list, too
@@ -164,7 +242,7 @@ class Main {
      * the initial fetch from TMDB (retrieves the first page of results based on the initial path)
      */
     fetchInitial() {
-        const url = this.#pathToTmdb + this.#initialCall + '&api_key=' + this.#apiKey;
+        const url = this.#initialCall + '&api_key=' + this.#apiKey;
 
         console.info(`starting to load initial data from ${url}`);
 
@@ -191,8 +269,33 @@ class Main {
             // create new instance of Movie (and pass the data object)
             const movie = new Movie(movieObject);
             // add the movie instance to the list
-            this.#movielist.addMovie(movie);
-        })
+            this.#movieList.addMovie(movie);
+        });
+        //this.#movieList.renderView();
+
+        this.renderView('movieList');
+    }
+
+    renderView(output, ...data) {
+        let outContainer = null;
+        let content = null;
+
+        switch (output) {
+            case 'movieList':
+                // render the movieList
+                outContainer = document.querySelector(this.#movieListView);
+                content = this.#movieList.renderView();
+                outContainer.appendChild(content);
+                break;
+            case 'movieFavoriteList':
+                // render the movieFavoriteList
+                outContainer = document.querySelector(this.#movieListView);
+                content = this.#movieList.renderView();
+                outContainer.appendChild(content);
+                break;
+            default:
+            // render the details
+        }
     }
 }
 
@@ -201,10 +304,15 @@ const mainInstance = new Main();
 
 // set initial values
 mainInstance.apiKey = '153a09fbeef547fb0435feeeb75d0140' // use it as url-parameter like 'api_key=153a09fbeef547fb0435feeeb75d0140'
-mainInstance.pathToTmdb = 'https://api.themoviedb.org/3/discover/movie'; // the main path to the movies
+mainInstance.pathToTmdb = 'https://api.themoviedb.org/3/movie'; // the main path to the movies
 mainInstance.pathToImages = 'https://image.tmdb.org/t/p/original'; // see readdme.md for other options
-mainInstance.initialCall = '?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'; // the url params to call first
+mainInstance.initialCall = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'; // the url params to call first
 mainInstance.localStorageName = 'movieFavs';
+
+// output-container for views
+mainInstance.movieListView = '#movieList';
+mainInstance.movieFavoritesListView = '#moviefavoritesList';
+mainInstance.detailView = '#detailView';
 
 // place the initial call 
 mainInstance.fetchInitial();
