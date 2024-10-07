@@ -10,37 +10,37 @@
         <style type="text/tailwindcss">
             /* special button styles for tailwind */
             @layer base {
-              .movie-button {
-                @apply inline-flex 
-                        justify-center
-                        items-center 
-                        py-1 
-                        px-3 
-                        text-base 
-                        font-medium 
-                        text-center 
-                        rounded-lg 
-                        border 
-                        border-gray-300 
-                        focus:ring-4 
-                        focus:ring-gray-100 
-                        dark:text-white 
-                        dark:border-gray-700 
-                        dark:hover:bg-gray-700 
-                        dark:focus:ring-gray-800
-                        disabled:bg-gray-200
-                        disabled:hover:bg-gray-200;
-        }
-              .movie-button-green {
-                @apply text-white 
-                        bg-green-700 
-                        hover:bg-green-800;
-              }
-              .movie-button-red {
-                @apply text-white 
-                        bg-red-700 
-                        hover:bg-red-800;
-              }
+                .movie-button {
+                    @apply inline-flex 
+                            justify-center
+                            items-center 
+                            py-1 
+                            px-3 
+                            text-base 
+                            font-medium 
+                            text-center 
+                            rounded-lg 
+                            border 
+                            border-gray-300 
+                            focus:ring-4 
+                            focus:ring-gray-100 
+                            dark:text-white 
+                            dark:border-gray-700 
+                            dark:hover:bg-gray-700 
+                            dark:focus:ring-gray-800
+                            disabled:bg-gray-200
+                            disabled:hover:bg-gray-200;
+                }
+                .movie-button-green {
+                    @apply text-white 
+                            bg-green-700 
+                            hover:bg-green-800;
+                }
+                .movie-button-red {
+                    @apply text-white 
+                            bg-red-700 
+                            hover:bg-red-800;
+                }
             }
           </style>
         <title>Movie Diary</title>
@@ -48,14 +48,14 @@
     <body class="bg-gray-200">
 
         <header class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6">
-            <!-- TODO: add some content here -->
+            <!-- TODO: add some content here: title, search, ... -->
         </header>
 
         <main>
             <section
                 class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6 md:flex gap-8 md:items-stretch">
                 <div
-                    class="flex-1 mb-6 flex flex-col justify-between bg-gray-50 rounded-lg shadow-xl p-6">
+                    class="flex-1 mb-6 flex flex-col bg-gray-50 rounded-lg shadow-xl p-6">
                     <h2
                         class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-grey-800 md:text-2xl lg:text-4xl dark:text-white">
                         Movie-list
@@ -65,7 +65,7 @@
                     </section>
                 </div>
                 <div
-                    class="flex-1 mb-6 flex flex-col justify-between bg-gray-50 rounded-lg shadow-xl p-6">
+                    class="flex-1 mb-6 flex flex-col bg-gray-50 rounded-lg shadow-xl p-6">
                     <h2
                         class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-grey-800 md:text-2xl lg:text-4xl dark:text-white">
                         Movie-details
@@ -78,13 +78,13 @@
             <section
                 class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6 md:flex gap-8 md:items-stretch">
                 <div
-                    class="flex-1 mb-6 flex flex-col justify-between bg-gray-50 rounded-lg shadow-xl p-6">
+                    class="flex-1 mb-6 flex flex-col bg-gray-50 rounded-lg shadow-xl p-6">
                     <h2
                         class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-grey-800 md:text-2xl lg:text-4xl dark:text-white">
                         Movie-favorites
                     </h2>
                     <section id="movieFavoritesList">
-                        <!-- content created by MovieList.renderOutput -->
+                        <!-- content created by Movie.renderOutput -->
                     </section>
                 </div>
             </section>
