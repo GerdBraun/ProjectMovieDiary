@@ -1,3 +1,5 @@
+import { renderListView, renderFavoritesListView, renderDetailsView } from './modules/renderViews.js';
+
 /**
  * a class for the movies
  */
@@ -17,6 +19,9 @@ class Movie {
     // getters & setters
     set mainInstance(val) {
         this.#mainInstance = val
+    }
+    get mainInstance() {
+        return this.#mainInstance
     }
 
     set id(val) {
@@ -47,29 +52,12 @@ class Movie {
 
     /**
      * renders the output
+     * @param {String} pathToImages 
      * @returns {Element} the element to be displayed
      */
     renderView(pathToImages) {
-        // TODO: fetch detail data first!
-
-        // TODO: build output...
-        const out = document.createElement('div');
-
-        const test = document.createElement('p');
-        test.innerHTML = '<strong>"' + this.data.title+'"</strong> ['+this.data.release_date+']';
-        if (this.data.title !== this.data.original_title) test.innerHTML += '<br>(' + this.data.original_title + ')';
-        test.innerHTML += '<br>created by Movie.renderView<br>has to be fetched every time';
-        out.appendChild(test);
-
-        const img = document.createElement('img');
-        img.src = pathToImages + this.data.poster_path;
-        out.appendChild(img);
-
-        const overview = document.createElement('p');
-        overview.textContent = this.data.overview;
-        out.appendChild(overview);
-
-        return out;
+        // call corresponding function from module
+        return renderDetailsView(this, pathToImages)
     }
 }
 
@@ -88,6 +76,9 @@ class MovieList {
     // getters & setters
     set mainInstance(val) {
         this.#mainInstance = val
+    }
+    get mainInstance() {
+        return this.#mainInstance
     }
 
     set list(val) {
@@ -123,40 +114,8 @@ class MovieList {
      * @returns {Element} the element to be displayed
      */
     renderView() {
-        // create list
-        const ul = document.createElement('ul');
-        this.list.forEach((movie) => {
-            const li = document.createElement('li');
-            li.classList = 'flex p-2 pl-3 text-gray-800 bg-white rounded shadow mb-1 justify-between items-center'
-            li.textContent = movie.data.title;
-
-            const span = document.createElement('span');
-            span.classList = 'flex gap-2';
-
-            const viewBtn = document.createElement('button');
-            viewBtn.classList = 'action-button movie-button movie-button-green';
-            viewBtn.textContent = 'view';
-            viewBtn.dataset.id = movie.data.id;
-            viewBtn.dataset.action = 'view';
-            viewBtn.dataset.caller = this.constructor.name; // pass the name of the Class
-            viewBtn.addEventListener('click', (event) => this.#mainInstance.eventHandler(event));
-            span.appendChild(viewBtn);
-
-            const addBtn = document.createElement('button');
-            addBtn.classList = 'action-button movie-button movie-button-green';
-            addBtn.textContent = 'add';
-            addBtn.dataset.id = movie.data.id;
-            addBtn.dataset.action = 'add';
-            addBtn.dataset.caller = this.constructor.name; // pass the name of the Class
-            addBtn.addEventListener('click', (event) => this.#mainInstance.eventHandler(event));
-            span.appendChild(addBtn);
-
-            li.appendChild(span);
-
-            ul.appendChild(li);
-        });
-
-        return ul;
+        // call corresponding function from module
+        return renderListView(this);
     }
 }
 
@@ -196,6 +155,14 @@ class MovieFavoritesList extends MovieList {
     getListFromLocalStorage() {
         return JSON.parse(localStorage.getItem(this.#localStorageName)) || [];
     }
+
+    /**
+     * renders the output (overwrites the method of the MovieeList)
+     * @returns {Element} the element to be displayed
+     */
+    renderView() {
+        return renderFavoritesListView(this);
+    }
 }
 
 /**
@@ -207,6 +174,8 @@ class Main {
     #pathToImages = '';
     #initialCall = '';
     #localStorageName = '';
+
+    #language = '';
 
     #movieList = new MovieList();
     #movieFavoritesList = new MovieFavoritesList();
@@ -261,6 +230,10 @@ class Main {
     }
     set detailView(val) {
         this.#detailView = val;
+    }
+
+    set language(val) {
+        this.#language = val;
     }
 
 
@@ -388,6 +361,7 @@ mainInstance.pathToTmdb = 'https://api.themoviedb.org/3/movie'; // the main path
 mainInstance.pathToImages = 'https://image.tmdb.org/t/p/w780'; // see readdme.md for other options
 mainInstance.initialCall = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'; // the url params to call first
 mainInstance.localStorageName = 'movieFavs';
+mainInstance.language = 'en-US';
 
 // output-container for views
 mainInstance.movieListView = '#movieList';
