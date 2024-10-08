@@ -34,7 +34,8 @@ export function renderListView(caller) {
 
         const viewBtn = document.createElement('button');
         viewBtn.classList = 'action-button movie-button movie-button-green';
-        viewBtn.textContent = 'view';
+        //viewBtn.textContent = 'view';
+        viewBtn.innerHTML = '&#x1f441;';
         viewBtn.dataset.id = movie.data.id;
         viewBtn.dataset.action = 'view';
         viewBtn.dataset.caller = caller.constructor.name; // pass the name of the Class
@@ -43,7 +44,8 @@ export function renderListView(caller) {
 
         const addBtn = document.createElement('button');
         addBtn.classList = 'action-button movie-button movie-button-green';
-        addBtn.textContent = 'add';
+        //addBtn.textContent = 'add';
+        addBtn.innerHTML = '&#9829;';
         addBtn.dataset.id = movie.data.id;
         addBtn.dataset.action = 'add';
         addBtn.dataset.caller = caller.constructor.name; // pass the name of the Class
@@ -89,21 +91,23 @@ export function renderFavoritesListView(caller) {
 
         const viewBtn = document.createElement('button');
         viewBtn.classList = 'action-button movie-button movie-button-green';
-        viewBtn.textContent = 'view';
+        //viewBtn.textContent = 'view';
+        viewBtn.innerHTML = '&#x1f441;';
         viewBtn.dataset.id = movie.data.id;
         viewBtn.dataset.action = 'view';
         viewBtn.dataset.caller = caller.constructor.name; // pass the name of the Class
         viewBtn.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
         span.appendChild(viewBtn);
 
-        const addBtn = document.createElement('button');
-        addBtn.classList = 'action-button movie-button movie-button-green';
-        addBtn.textContent = 'add';
-        addBtn.dataset.id = movie.data.id;
-        addBtn.dataset.action = 'add';
-        addBtn.dataset.caller = caller.constructor.name; // pass the name of the Class
-        addBtn.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
-        span.appendChild(addBtn);
+        const removeBtn = document.createElement('button');
+        removeBtn.classList = 'action-button movie-button movie-button-green';
+        //removeBtn.textContent = 'remove';
+        removeBtn.innerHTML = '&#10006;'
+        removeBtn.dataset.id = movie.data.id;
+        removeBtn.dataset.action = 'remove';
+        removeBtn.dataset.caller = caller.constructor.name; // pass the name of the Class
+        removeBtn.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
+        span.appendChild(removeBtn);
 
         li.appendChild(span);
 
