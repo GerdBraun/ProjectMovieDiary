@@ -1,4 +1,4 @@
-import { renderListView, renderFavoritesListView, renderDetailsView } from './modules/renderViews.js';
+import { renderListView, renderFavoritesListView, renderDetailsView } from './modules/ui.js';
 
 /**
  * a class for the movies
@@ -331,8 +331,6 @@ class Main {
      * @param {Event} event 
      */
     eventHandler(event) {
-        console.log(event.target.dataset);
-
         const dataset = event.target.dataset;
 
         switch (dataset.action) {
