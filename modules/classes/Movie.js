@@ -1,0 +1,73 @@
+import { renderListView, renderFavoritesListView, renderDetailsView } from '../ui.js';
+import { saveListToLocalStorage, getListFromLocalStorage } from '../storage.js';
+import { fetchInitial, fetchMovieDetails } from '../network.js';
+
+/**
+ * a class for the movies
+ */
+export class Movie {
+    // private vars
+    // #id = 0;    // the id of the movie ! we'll take it from the data object
+    #data = {};  // for storing the fetched data object
+    #details = {} // for storing the fetched detail object
+    #mainInstance = {}; // the main instance for event handlers
+
+    //constructor method
+    constructor(movieObject) {
+        // build a new Movie based on the dataObject
+        this.data = movieObject || {};
+    }
+
+    // getters & setters
+    set mainInstance(val) {
+        this.#mainInstance = val
+    }
+    get mainInstance() {
+        return this.#mainInstance
+    }
+
+    set id(val) {
+        this.#data.id = val
+    }
+    get id() {
+        return this.#data.id;
+    }
+    set data(val) {
+        this.#data = val
+    }
+    get data() {
+        return this.#data;
+    }
+
+    set details(val) {
+        this.#details = val
+    }
+    get details() {
+        return this.#details;
+    }
+
+    async fetchMovieDetails() {
+        // TODO: fetch the detail data
+        // url-example: 'https://api.themoviedb.org/3/movie/533535?language=en-US&api_key=153a09fbeef547fb0435feeeb75d0140'
+
+        try {
+            this.details = await fetchMovieDetails(this.data.id);
+            console.log('Movie: fetchMovieDetails -> ',this.details)
+            return this.details;
+        } catch (e) {
+            console.error(e)
+        }
+
+    }
+
+    /**
+     * renders the output
+     * @param {String} pathToImages 
+     * @returns {Element} the element to be displayed
+     */
+    renderView(pathToImages) {
+        this.fetchMovieDetails();
+
+        return renderDetailsView(this, pathToImages)
+    }
+}
