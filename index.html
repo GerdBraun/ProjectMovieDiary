@@ -5,11 +5,103 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script
             src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,container-queries"></script>
-        <script src="main.js"></script>
+        <script src="main.js" type="module"></script>
         <script src="tailwind.config.js"></script>
+        <style type="text/tailwindcss">
+            /* special button styles for tailwind */
+            @layer base {
+                .movie-button {
+                    @apply inline-flex 
+                            justify-center
+                            items-center 
+                            py-1 
+                            px-3 
+                            text-base 
+                            font-medium 
+                            text-center 
+                            rounded-lg 
+                            border 
+                            border-gray-300 
+                            focus:ring-4 
+                            focus:ring-gray-100 
+                            dark:text-white 
+                            dark:border-gray-700 
+                            dark:hover:bg-gray-700 
+                            dark:focus:ring-gray-800
+                            disabled:bg-gray-200
+                            disabled:hover:bg-gray-200;
+                }
+                .movie-button-green {
+                    @apply text-white 
+                            bg-green-700 
+                            hover:bg-green-800;
+                }
+                .movie-button-red {
+                    @apply text-white 
+                            bg-red-700 
+                            hover:bg-red-800;
+                }
+            }
+          </style>
+        <style>
+            .progress-ring__circle {
+                transition: stroke-dashoffset 0.35s;
+                transform: rotate(-90deg);
+                transform-origin: 50% 0;
+            }
+          </style>
         <title>Movie Diary</title>
     </head>
-    <body>
+    <body class="bg-gray-200">
+
+        <header class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6">
+            <!-- TODO: add some content here: title, search, ... -->
+            <select id="languageSelector">
+                <option value="en-US">EN</option>
+                <option value="de-DE">DE</option>
+            </select>
+        </header>
+
+        <main>
+            <section
+                class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6 md:flex gap-8 md:items-stretch">
+                <div
+                    class="flex-1 mb-6 flex flex-col bg-gray-50 rounded-lg shadow-xl p-6">
+                    <h2
+                        class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-grey-800 md:text-2xl lg:text-4xl dark:text-white">
+                        Movie-list
+                    </h2>
+                    <section id="movieList">
+                        <!-- content created by MovieList.renderOutput -->
+                    </section>
+                </div>
+                <div
+                    class="flex-1 mb-6 flex flex-col bg-gray-50 rounded-lg shadow-xl p-6">
+                    <h2
+                        class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-grey-800 md:text-2xl lg:text-4xl dark:text-white">
+                        Movie-details
+                    </h2>
+                    <section id="movieDetails">
+                        <!-- content created by MovieList.renderOutput -->
+                    </section>
+                </div>
+            </section>
+            <section
+                class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6 md:flex gap-8 md:items-stretch">
+                <div
+                    class="flex-1 mb-6 flex flex-col bg-gray-50 rounded-lg shadow-xl p-6">
+                    <h2
+                        class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-grey-800 md:text-2xl lg:text-4xl dark:text-white">
+                        Movie-favorites
+                    </h2>
+                    <section id="movieFavoritesList">
+                        <!-- content created by Movie.renderOutput -->
+                    </section>
+                </div>
+            </section>
+        </main>
+
+        <footer></footer>
 
     </body>
 </html>
