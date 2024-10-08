@@ -3,7 +3,7 @@
 /**
  * the initial fetch from TMDB (retrieves the first page of results based on the initial path)
  */
-export function fetchInitial(caller) {
+export const fetchInitial = (caller) => {
     const url = caller.initialCall + '&api_key=' + caller.apiKey;
 
     console.info(`starting to load initial data from ${url}`);
@@ -21,14 +21,14 @@ export function fetchInitial(caller) {
         .catch(err => console.error(err));
 }
 
-export function fetchMovieDetails(id) {
+export const fetchMovieDetails = (id) => {
     // TODO: use real data!
     const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US&api_key=153a09fbeef547fb0435feeeb75d0140&append_to_response=credits`;
     const results = fetch(url)
         .then(response => response.json())
         .then(response => {
             console.info('finished loading getMovieDetails')
-            console.log('network.js: fetchMovieDetails -> ',response)
+            console.log('network.js: fetchMovieDetails -> ', response)
 
             return response;
         })

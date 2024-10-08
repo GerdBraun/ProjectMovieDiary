@@ -1,3 +1,5 @@
+import {initialData} from './modules/initialData.js';
+
 import { renderListView, renderFavoritesListView, renderDetailsView } from './modules/ui.js';
 import { saveListToLocalStorage, getListFromLocalStorage } from './modules/storage.js';
 import { fetchInitial, fetchMovieDetails } from './modules/network.js';
@@ -185,20 +187,10 @@ class Main {
 // create an instance of Main
 const mainInstance = new Main();
 
-// set initial values
-mainInstance.apiKey = '153a09fbeef547fb0435feeeb75d0140' // use it as url-parameter like 'api_key=153a09fbeef547fb0435feeeb75d0140'
-mainInstance.pathToTmdb = 'https://api.themoviedb.org/3/movie'; // the main path to the movies
-// mainInstance.pathToImages = 'https://image.tmdb.org/t/p/original'; // see readdme.md for other options
-// mainInstance.pathToImages = 'https://image.tmdb.org/t/p/w440_and_h660_face'; // see readdme.md for other options
-mainInstance.pathToImages = 'https://image.tmdb.org/t/p/w780'; // see readdme.md for other options
-mainInstance.initialCall = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'; // the url params to call first
-mainInstance.localStorageName = 'movieFavs';
-mainInstance.language = 'en-US';
-
-// output-container for views
-mainInstance.movieListView = '#movieList';
-mainInstance.movieFavoritesListView = '#movieFavoritesList';
-mainInstance.detailView = '#movieDetails';
+// add initial data  to main 
+for(let key in initialData){
+    mainInstance[key] = initialData[key]
+}
 
 // place the initial call 
 mainInstance.fetchInitial();

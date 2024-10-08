@@ -1,17 +1,17 @@
 // modules/svg.js
 
-export function createPercentageSvg(percent) {
+export const createPercentageSvg = (percent) => {
     const radius = 10;
     const circumference = radius * 2 * Math.PI;
     const offset = circumference - percent / 100 * circumference;
 
-    const percentToDisplay = Math.round(percent/10);
+    const percentToDisplay = Math.round(percent / 10);
 
     let color = '#bb3a1e';
-    if(percentToDisplay > 6.5){
-        color='#15803d'
-    }else if(percentToDisplay > 4.5){
-        color='#deb528'
+    if (percentToDisplay > 6.5) {
+        color = '#15803d'
+    } else if (percentToDisplay > 4.5) {
+        color = '#deb528'
     }
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");

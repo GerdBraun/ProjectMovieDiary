@@ -8,7 +8,7 @@ import { createPercentageSvg } from './svg.js';
  * @param {MovieList} caller the calling class instance
  * @returns {Element} the rendered Element
  */
-export function renderListView(caller) {
+export const renderListView = (caller) => {
     // create list
     const ul = document.createElement('ul');
     caller.list.forEach((movie) => {
@@ -65,7 +65,7 @@ export function renderListView(caller) {
  * @param {MovieFavoritesList} caller the calling class instance
  * @returns {Element} the rendered Element
  */
-export function renderFavoritesListView(caller) {
+export const renderFavoritesListView = (caller) => {
     // create list
     const ul = document.createElement('ul');
     caller.list.forEach((movie) => {
@@ -123,7 +123,7 @@ export function renderFavoritesListView(caller) {
  * @param {String} pathToImages 
  * @returns {Element} the element to be displayed
  */
-export function renderDetailsView(caller, pathToImages) {
+export const renderDetailsView = (caller, pathToImages) => {
     // TODO: fetch detail data first!
 
     // TODO: build output...
