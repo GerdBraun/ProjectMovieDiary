@@ -56,10 +56,14 @@
 
         <header class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6">
             <!-- TODO: add some content here: title, search, ... -->
-            <select id="languageSelector">
-                <option value="en-US">EN</option>
-                <option value="de-DE">DE</option>
-            </select>
+            <form id="searchForm" data-action="search">
+                <input type="text" id="searchString"
+                    placeholder="search for something">
+                <button id="searchButton"
+                    class="action-button movie-button movie-button-green"
+                    data-action="search">search</button>
+
+            </form>
         </header>
 
         <main>

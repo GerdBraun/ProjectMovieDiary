@@ -1,12 +1,12 @@
-import {initialData} from './modules/initialData.js';
+import { initialData } from './modules/initialData.js';
 
 import { renderListView, renderFavoritesListView, renderDetailsView } from './modules/ui.js';
 import { saveListToLocalStorage, getListFromLocalStorage } from './modules/storage.js';
 import { fetchInitial, fetchMovieDetails } from './modules/network.js';
 
-import {Movie} from './modules/classes/Movie.js';
-import {MovieList} from './modules/classes/MovieList.js';
-import {MovieFavoritesList} from './modules/classes/MovieFavoritesList.js';
+import { Movie } from './modules/classes/Movie.js';
+import { MovieList } from './modules/classes/MovieList.js';
+import { MovieFavoritesList } from './modules/classes/MovieFavoritesList.js';
 
 
 
@@ -38,6 +38,9 @@ class Main {
         // pass the main instance for event listeners
         this.#movieList.mainInstance = this;
         this.#movieFavoritesList.mainInstance = this;
+
+        // add event listener for search
+        document.querySelector('#searchForm').addEventListener('submit', (event) => this.eventHandler(event))
     }
 
     // getters & setters
@@ -166,7 +169,7 @@ class Main {
      */
     eventHandler(event) {
         const dataset = event.target.dataset;
-
+        console.log(dataset.action)
         switch (dataset.action) {
             case 'view':
                 // show detail view
@@ -184,7 +187,40 @@ class Main {
             case 'remove':
                 // remove movies from favorites
                 break;
+
+            // search
+            case 'search':
+                event.preventDefault();
+                const searchTerm = document.querySelector('#searchString').value;
+                if (searchTerm) {
+                    this.search(searchTerm)
+                } else {
+                    alert('do you really want to search for nothing???');
+                }
+                break;
             default:
+        }
+    }
+
+    search(searchTerm) {
+        console.log('searching for ', searchTerm);
+        searchTerm = encodeURI(searchTerm);
+
+        const url = `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&include_adult=false&language=en-US&page=1&api_key=${this.apiKey}`;
+        const rsults = fetch(url)
+            .then(response => response.json())
+            .then(response => {
+                this.showSearchResults(response.results,searchTerm);
+            })
+            .catch(err => console.error(err));
+    }
+    async showSearchResults(results, searchTerm) {
+        if(results.length){
+            // clear the movie list;
+            this.#movieList.list = [];
+            this.populateMovieList(results);
+        }else{
+            alert(`nothing found searching for "${searchTerm}"`);
         }
     }
 }
@@ -193,7 +229,7 @@ class Main {
 const mainInstance = new Main();
 
 // add initial data  to main 
-for(let key in initialData){
+for (let key in initialData) {
     mainInstance[key] = initialData[key]
 }
 
