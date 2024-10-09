@@ -109,6 +109,17 @@ export const renderFavoritesListView = (caller) => {
         removeBtn.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
         span.appendChild(removeBtn);
 
+
+        const commentOpenModal = document.createElement('button');
+        commentOpenModal.classList = 'action-button movie-button movie-button-green';
+        //viewBtn.textContent = 'view';
+        commentOpenModal.innerHTML = '&#x1f441;';
+        commentOpenModal.dataset.id = movie.data.id;
+        commentOpenModal.dataset.action = 'openCommentModal';
+        commentOpenModal.dataset.caller = caller.constructor.name; // pass the name of the Class
+        commentOpenModal.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
+        span.appendChild(commentOpenModal);
+
         li.appendChild(span);
 
         ul.appendChild(li);
@@ -144,4 +155,63 @@ export const renderDetailsView = (caller, pathToImages) => {
     out.appendChild(overview);
 
     return out;
+}
+
+export const renderModalComments = (caller, movie) => {
+
+    const div = document.createElement('div');
+
+    const form = document.createElement('form');
+    form.classList = 'flex flex-col';
+
+    const label = document.createElement('label');
+    label.for = 'commentText';
+    label.textContent = 'Comment';
+    form.appendChild(label);
+
+    const textarea = document.createElement('textarea');
+    textarea.id = 'commentText';
+    textarea.placeholder = 'enter your comment here';
+    form.appendChild(textarea);
+
+    div.appendChild(form);
+
+    const btn = document.createElement('button');
+    btn.classList = 'action-button movie-button movie-button-green';
+    btn.dataset.caller = caller.constructor.name;
+    btn.dataset.action = 'addComment';
+    btn.dataset.id = movie.data.id;
+    btn.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
+    btn.textContent = 'add comment';
+    form.appendChild(btn);
+
+    const ul = document.createElement('ul');
+    movie.data.commentsList.forEach((comment) => {
+        const li = document.createElement('li');
+        li.classList = 'p-2 pl-3 text-gray-800 bg-white rounded shadow mb-1 flex flex-col'
+
+        const ts = new Date(comment.timestamp);
+        const time = document.createElement('span');
+        time.classList = 'text-sm';
+        time.textContent = ts.toLocaleString();
+        li.appendChild(time);
+
+        const text = document.createElement('span');
+        text.textContent = comment.text;
+        li.appendChild(text);
+
+        const btn = document.createElement('button');
+        btn.textContent = 'remove';
+        btn.dataset.caller = caller.constructor.name;
+        btn.dataset.action = 'removeComment';
+        btn.dataset.id = movie.data.id;
+        btn.dataset.commentId = comment.id;
+        btn.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
+        li.appendChild(btn);
+
+        ul.appendChild(li);
+    })
+    div.appendChild(ul);
+
+    return div
 }
