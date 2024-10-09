@@ -174,6 +174,11 @@ class Main {
                 break;
             case 'add':
                 // add movie to favorites
+                const movie = this.#movieList.getMovieById(dataset.id);
+                console.log(movie);
+
+                this.#movieFavoritesList.addMovie(movie);
+
                 this.renderView('movieFavoritesList')
                 break;
             case 'remove':

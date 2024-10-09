@@ -1,5 +1,5 @@
 import { renderListView, renderFavoritesListView, renderDetailsView } from '../ui.js';
-import { saveListToLocalStorage, getListFromLocalStorage } from '../storage.js';
+import { saveListToLocalStorage, getListFromLocalStorage,addToStorage,removeFromStorage,checkInStorage } from '../storage.js';
 import { fetchInitial, fetchMovieDetails } from '../network.js';
 import {MovieList, Movie} from './MovieList.js';
 
@@ -22,6 +22,21 @@ export class MovieFavoritesList extends MovieList {
     }
     get localStorageName() {
         return this.#localStorageName;
+    }
+
+    /**
+     * adds a movie to the list (overwrites the corresponding MovieList method)
+     * @param {Movie} movie the movie to add
+     */
+    addMovie(movie){
+        console.log(`movie "${movie.data.title}" was added to the MovieFavoritesList`);
+        // TODO: prevent adding a movie already existing
+        if(!checkInStorage(movie, this.localStorageName)){
+            this.list.push(movie);
+            // TODO: add it to the local storage
+        }else{
+            alert('movie already added to favorites')
+        }
     }
 
     /**

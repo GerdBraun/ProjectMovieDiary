@@ -19,10 +19,10 @@ export const renderListView = (caller) => {
         firstSpan.textContent = movie.data.title;
         firstSpan.classList = 'flex gap-2 items-center'
 
-        const percentage = parseInt(movie.data.vote_average) * 10;
+        const percentage = parseFloat(movie.data.vote_average) * 10;
         const svg = createPercentageSvg(percentage);
         //svg.classList = 'w-10 h-10 bg-black';
-        svg.classList = 'w-6 h-6';
+        svg.classList = 'w-10 h-10';
         firstSpan.prepend(svg);
 
 
@@ -76,10 +76,10 @@ export const renderFavoritesListView = (caller) => {
         firstSpan.textContent = movie.data.title;
         firstSpan.classList = 'flex gap-2 items-center'
 
-        const percentage = parseInt(movie.data.vote_average) * 10;
+        const percentage = parseFloat(movie.data.vote_average) * 10;
         const svg = createPercentageSvg(percentage);
         //svg.classList = 'w-10 h-10 bg-black';
-        svg.classList = 'w-6 h-6';
+        svg.classList = 'w-10 h-10';
         firstSpan.prepend(svg);
 
 
@@ -100,7 +100,7 @@ export const renderFavoritesListView = (caller) => {
         span.appendChild(viewBtn);
 
         const removeBtn = document.createElement('button');
-        removeBtn.classList = 'action-button movie-button movie-button-green';
+        removeBtn.classList = 'action-button movie-button movie-button-red';
         //removeBtn.textContent = 'remove';
         removeBtn.innerHTML = '&#10006;'
         removeBtn.dataset.id = movie.data.id;
