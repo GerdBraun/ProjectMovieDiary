@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script
+            src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,container-queries"></script>
+        <script src="tailwind.config.js"></script>
+        <style>
+            .progress-ring__circle {
+                transition: stroke-dashoffset 0.35s;
+                transform: rotate(-90deg);
+                transform-origin: 50% 0;
+            }
+          </style>
+        <title>Movie Diary</title>
+
+    </head>
+    <body class="bg-gray-200">
+        <section id="movieWrapper"
+            class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6 flex gap-8 overflow-x-scroll bg-gray-300">
+            <!-- card -->
+            <div id="card" class="card w-30 flex-none shadow-lg rounded-lg">
+                <div class="image">
+                    <div class="wrapper relative">
+                        <a class="image"
+                            href="/movie/917496-beetlejuice-beetlejuice?language=en"
+                            title="Beetlejuice Beetlejuice">
+                            <img loading="lazy" class="poster w-full rounded-lg"
+                                src="https://media.themoviedb.org/t/p/w220_and_h330_face/kKgQzkUCnQmeTPkyIwHly2t6ZFI.jpg"
+                                srcset="https://media.themoviedb.org/t/p/w220_and_h330_face/kKgQzkUCnQmeTPkyIwHly2t6ZFI.jpg 1x, https://media.themoviedb.org/t/p/w440_and_h660_face/kKgQzkUCnQmeTPkyIwHly2t6ZFI.jpg 2x"
+                                alt="Beetlejuice Beetlejuice">
+                            <span class="absolute bottom-[-1rem] left-[-1rem]">
+                                <svg viewBox="0 0 100 100" class="w-10 h-10">
+                                    <circle class="progress-ring__circle"
+                                        stroke="#ccc" stroke-width="10"
+                                        fill="rgba(0,0,0,.75)" r="40" cx="0"
+                                        cy="0"></circle>
+                                    <circle class="progress-ring__circle"
+                                        stroke="#15803d" stroke-width="10"
+                                        fill="transparent" r="40" cx="0" cy="0"
+                                        style="
+                                            stroke-dasharray:251.32741228718345 251.32741228718345;
+                                            stroke-dashoffset:75.39822368615503;
+                                        "></circle>
+                                    <text x="50%" y="50%" text-anchor="middle"
+                                        fill="#fff" stroke-width="2px"
+                                        font-size="40px" dy=".3em">7</text>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="options" data-id="917496"
+                        data-object-id="61be274afa404600605eb4a7"
+                        data-media-type="movie" data-role="tooltip">
+                        <a class="no_click" href="#"
+                            aria-label="View Item Options"><div
+                                class="glyphicons_v2 circle-more white"></div></a>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <div class="consensus tight">
+                        <div class="outer_ring">
+                            <div
+                                class="user_score_chart 61be274afa404600605eb4a7"
+                                data-percent="71" data-track-color="#204529"
+                                data-bar-color="#21d07a">
+                                <div class="percent">
+                                    <span class="icon icon-r71"></span>
+                                </div>
+                                <canvas height="68" width="68"
+                                    style="height: 34px; width: 34px;"></canvas></div>
+                        </div>
+                    </div>
+
+                    <h2><a
+                            href="/movie/917496-beetlejuice-beetlejuice?language=en"
+                            title="Beetlejuice Beetlejuice">Beetlejuice
+                            Beetlejuice</a></h2>
+                    <p>Sep 12, 2024</p>
+                </div>
+
+                <div class="hover 917496"></div>
+            </div>
+
+        </section>
+
+        <section id="movieDetailsWrapper"
+            class="bg-cover bg-center bg-[url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces/A1dZ6faTjg0e6HYftBmEKujuXGQ.jpg)]">
+            <div id="movieDetails"
+                class="py-8 px-4 mx-auto max-w-screen-xl lg:px-6 flex gap-8 md:items-stretch">
+
+                <div class="flex-1 basis-1/4">
+                    <img class="poster w-full"
+                        src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/kKgQzkUCnQmeTPkyIwHly2t6ZFI.jpg"
+                        srcset="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/kKgQzkUCnQmeTPkyIwHly2t6ZFI.jpg 1x, https://media.themoviedb.org/t/p/w600_and_h900_bestv2/kKgQzkUCnQmeTPkyIwHly2t6ZFI.jpg 2x"
+                        alt="Beetlejuice Beetlejuice">
+
+                </div>
+                <div class="flex-1 basis-3/4">
+                    <svg viewBox="0 0 100 100" class="w-20 h-20">
+                        <circle class="progress-ring__circle"
+                            stroke="#ccc" stroke-width="10"
+                            fill="rgba(0,0,0,.75)" r="40" cx="0"
+                            cy="0"></circle>
+                        <circle class="progress-ring__circle"
+                            stroke="#15803d" stroke-width="10"
+                            fill="transparent" r="40" cx="0" cy="0"
+                            style="
+                                stroke-dasharray:251.32741228718345 251.32741228718345;
+                                stroke-dashoffset:75.39822368615503;
+                            "></circle>
+                        <text x="50%" y="50%" text-anchor="middle"
+                            fill="#fff" stroke-width="2px"
+                            font-size="40px" dy=".3em">7</text>
+                    </svg>
+</div>
+            </div>
+
+        </section>
+    </body>
+    <script>
+        const movieWrapper = document.querySelector('#movieWrapper');
+        const card = document.querySelector('#card');
+
+        console.log(movieWrapper);
+        console.log(card);
+
+        for(n=0;n<10;n++){
+            movieWrapper.innerHTML += '<div class="card w-30 flex-none shadow-lg rounded-lg">'+card.innerHTML+'</div>';
+        }
+    </script>
+</html>

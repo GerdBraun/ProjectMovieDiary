@@ -25,8 +25,9 @@ export const getListFromLocalStorage = (localStorageName) => {
  * adds a movie to the local storage
  * @param {Movie} movie the movie to add
  */
-export const addToStorage = (movie) => {
-    const list = JSON.parse(localStorage.getItem("movieFavs")) || [];
+export const addToStorage = (movie,localStorageName) => {
+    const storageName = localStorageName || 'movieFavs';
+    const list = JSON.parse(localStorage.getItem(storageName)) || [];
     list.push(movie.data);
     localStorage.setItem("movieFavs", JSON.stringify(list));
 };
@@ -35,8 +36,9 @@ export const addToStorage = (movie) => {
  * removes a movie to the local storage
  * @param {Movie} movie the movie to remove
  */
-export const removeFromStorage = (movie) => {
-    const list = JSON.parse(localStorage.getItem("movieFavs")) || [];
+export const removeFromStorage = (movie,localStorageName) => {
+    const storageName = localStorageName || 'movieFavs';
+    const list = JSON.parse(localStorage.getItem(storageName)) || [];
     const newlist = list.filter((item) => item.id !== movie.data.id);
     localStorage.setItem("movieFavs", JSON.stringify(newlist));
 };
@@ -46,8 +48,9 @@ export const removeFromStorage = (movie) => {
  * @param {Movie} movie the movie to search for
  * @returns {Boolean}   
  */
-export const checkInStorage = (movie) => {
-    const list = JSON.parse(localStorage.getItem("movieFavs")) || [];
+export const checkInStorage = (movie,localStorageName) => {
+    const storageName = localStorageName || 'movieFavs';
+    const list = JSON.parse(localStorage.getItem(storageName)) || [];
     const found = list.find((item) => item.id === movie.data.id);
     return !!found;
 };
