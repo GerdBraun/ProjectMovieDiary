@@ -347,6 +347,16 @@ export const renderModalComments = (caller, movie) => {
 export const renderMovieAdditionalDetails = (details) => {
     const out = document.createElement('div');
 
+    if(details.homepage){
+        const link = document.createElement('a');
+        link.classList = 'block mb-6 hover:text-gray-300';
+        link.href = details.homepage;
+        link.target = '_blank';
+        link.textContent = 'Homepage >';
+        out.appendChild(link);
+    }
+
+
     const castTitle = document.createElement('h4');
     castTitle.textContent = 'Cast';
     castTitle.classList = 'text-xl';
@@ -377,6 +387,7 @@ export const renderMovieAdditionalDetails = (details) => {
             ul.appendChild(li);
         }
     })
+
     out.appendChild(ul);
 
     return out;
