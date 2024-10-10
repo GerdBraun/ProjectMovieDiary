@@ -252,7 +252,6 @@ export const renderDetailsView = (caller, pathToImages) => {
     const divR = document.createElement('div');
     divR.classList = 'flex-1 basis-3/4';
 
-    // TODO: info in here
     const title = document.createElement('h3');
     title.classList = 'text-5xl text-white'
     title.textContent = caller.data.title;
@@ -265,8 +264,13 @@ export const renderDetailsView = (caller, pathToImages) => {
         divR.appendChild(originalTitle);
     }
 
-    const overview = document.createElement('p');
-    overview.classList = 'text-white my-6'
+    const overviewTitle = document.createElement('h4');
+    overviewTitle.textContent = 'Overview:';
+    overviewTitle.classList = 'text-white text-xl mt-5 mb-2';
+    divR.appendChild(overviewTitle);
+
+   const overview = document.createElement('p');
+    overview.classList = 'text-white mb-6'
     overview.textContent = caller.data.overview;
     divR.appendChild(overview);
 
@@ -368,8 +372,8 @@ export const renderMovieAdditionalDetails = (details) => {
 
 
     const castTitle = document.createElement('h4');
-    castTitle.textContent = 'Cast';
-    castTitle.classList = 'text-xl';
+    castTitle.textContent = 'Cast:';
+    castTitle.classList = 'text-xl mb-2';
     out.appendChild(castTitle);
 
     const ul = document.createElement('ul');
