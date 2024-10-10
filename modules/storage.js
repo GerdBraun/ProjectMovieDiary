@@ -6,6 +6,8 @@
  * @param {Array} arr the array to save
  */
 export const saveListToLocalStorage = (localStorageName, arr) => {
+    console.log(arr)
+
     localStorage.setItem(localStorageName, JSON.stringify(arr));
 }
 
@@ -16,7 +18,7 @@ export const saveListToLocalStorage = (localStorageName, arr) => {
  * @returns {Array} an array of movie (objects) from the local storage 
  */
 export const getListFromLocalStorage = (localStorageName) => {
-    return JSON.parse(localStorage.getItem(localStorageName)) || [];
+    return JSON.parse(localStorage.getItem('movieFavs')) || [];
 }
 
 // data adapted from Besslan

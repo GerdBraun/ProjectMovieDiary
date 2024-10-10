@@ -185,6 +185,8 @@ export const renderModalComments = (caller, movie) => {
     btn.textContent = 'add comment';
     form.appendChild(btn);
 
+console.log(movie)
+
     const ul = document.createElement('ul');
     movie.data.commentsList.forEach((comment) => {
         const li = document.createElement('li');

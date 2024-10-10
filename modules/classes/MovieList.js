@@ -38,7 +38,6 @@ export class MovieList {
      * @param {Movie} movie 
      */
     addMovie(movie) {
-        console.log(`movie "${movie.data.title}" was added to the MovieList`);
         this.list.push(movie);
     }
 

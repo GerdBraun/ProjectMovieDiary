@@ -16,7 +16,7 @@ export class Movie {
     constructor(movieObject) {
         // build a new Movie based on the dataObject
         this.data = movieObject || {};
-        this.data.commentsList = [];
+        this.data.commentsList = this.data.commentsList || [];
     }
 
     // getters & setters
