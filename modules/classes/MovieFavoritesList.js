@@ -34,12 +34,18 @@ export class MovieFavoritesList extends MovieList {
                 this.list.push(movie);
                 addToStorage(movie, this.localStorageName)
             }else{
-                //alert('movie already added to favorites')
+                alert('movie already added to favorites')
             }
         }else{
             console.log(movie)
             this.list.push(movie);
         }
+    }
+
+    removeMovie(movie){
+        const newlist = this.list.filter((item) => item.id !== movie.data.id);
+        this.list = newlist;
+        this.saveListToLocalStorage(this.list);
     }
 
     /**
