@@ -72,7 +72,7 @@ export const renderListView = (caller) => {
         //card.classList = 'card w-30 flex-none shadow-lg rounded-lg bg-gray-100'
 
         const link = document.createElement('button');
-        link.classList = 'action-button relative';
+        link.classList = 'action-button relative  bg-gray-500 rounded-t-lg';
         link.dataset.id = movie.data.id;
         link.dataset.action = 'view';
         link.dataset.caller = caller.constructor.name; // pass the name of the Class
@@ -80,7 +80,7 @@ export const renderListView = (caller) => {
         link.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
 
         const img = document.createElement('img');
-        img.classList = 'rounded-t-lg';
+        img.classList = 'rounded-t-lg hover:opacity-50';
         img.src = 'https://media.themoviedb.org/t/p/w220_and_h330_face' + movie.data.poster_path;
         link.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
         link.appendChild(img);
@@ -102,8 +102,8 @@ export const renderListView = (caller) => {
         const addBtn = document.createElement('button');
         addBtn.classList = 'action-button w-10 h-10 absolute top-[-1rem] right-[-1rem]';
         //addBtn.textContent = 'add';
-        addBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 245">
-<path d="m56,237 74-228 74,228L10,96h240" fill="#c82c2c"/>
+        addBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 245" fill="#c82c2c">
+<path d="m56,237 74-228 74,228L10,96h240"/>
 </svg>`;
         addBtn.dataset.id = movie.data.id;
         addBtn.dataset.action = 'add';

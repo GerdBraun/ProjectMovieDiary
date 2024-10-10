@@ -202,7 +202,8 @@ class Main {
                 break;
             case 'remove':
                 // remove movies from favorites
-                const movieR = this.#movieList.getMovieById(dataset.id);
+                const movieR = this.#movieFavoritesList.getMovieById(dataset.id);
+                console.log(movieR);
                 if(confirm(`really remove "${movieR.data.title}"?`)){
 
                     this.#movieFavoritesList.removeMovie(movieR);
