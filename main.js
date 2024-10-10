@@ -1,7 +1,7 @@
 import {  initialData  } from './modules/initialData.js';
 
 import { renderListView, renderFavoritesListView, renderDetailsView, renderModalComments } from './modules/ui.js';
-import { saveListToLocalStorage, getListFromLocalStorage } from './modules/storage.js';
+import { saveListToLocalStorage, getListFromLocalStorage, checkInStorage } from './modules/storage.js';
 import { fetchInitial, fetchMovieDetails } from './modules/network.js';
 
 import {  Movie  } from './modules/classes/Movie.js';
@@ -194,8 +194,7 @@ class Main {
             case 'add':
                 // add movie to favorites
                 const movie = this.#movieList.getMovieById(dataset.id);
-                console.log(movie);
-
+                event.currentTarget.classList.add('active')
                 this.#movieFavoritesList.addMovie(movie);
 
                 this.renderView('movieFavoritesList')

@@ -50,8 +50,11 @@
                 transform-origin: 50% 0;
             }
 
+            .action-button.active > svg {
+                fill:green;
+            }
             .action-button:hover > svg {
-                fill:white;
+                fill:green;
             }
 
           </style>
@@ -80,7 +83,10 @@
                 <div
                     class="flex-1 mb-6 flex flex-col bg-gray-50 rounded-lg shadow-xl p-6">
                     <h2
-                        class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-grey-800 md:text-2xl lg:text-4xl dark:text-white">
+                        class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-grey-800 md:text-2xl lg:text-4xl dark:text-white flex gap-2">
+                        <svg class="w-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 245" fill="green">
+                            <path d="m56,237 74-228 74,228L10,96h240"/>
+                            </svg>
                         Movie-favorites
                     </h2>
                     <section id="movieFavoritesList">
