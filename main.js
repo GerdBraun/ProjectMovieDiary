@@ -192,7 +192,7 @@ class Main {
                 this.renderView('details', dataset.caller, dataset.id);
 
                 const detailsContainer = document.querySelector(this.#detailView);
-                detailsContainer.scrollIntoView({ behavior: "smooth" });
+                detailsContainer.scrollIntoView(true);
                 break;
             case 'add':
                 // add movie to favorites
@@ -203,7 +203,7 @@ class Main {
                 this.renderView('movieFavoritesList');
 
                 const favsContainer = document.querySelector(this.#movieFavoritesListView);
-                favsContainer.scrollIntoView({ behavior: "smooth" });
+                favsContainer.scrollIntoView(true);
                 break;
             case 'remove':
                 // remove movies from favorites
