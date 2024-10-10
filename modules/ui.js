@@ -64,7 +64,7 @@ export const renderListView = (caller) => {
 
 
     const ul = document.createElement('ul');
-    ul.classList = 'py-8 px-4 lg:px-6 flex gap-8 overflow-x-scroll bg-gray-300'
+    ul.classList = 'py-8 px-4 lg:px-6 flex gap-8 overflow-x-scroll bg-red-900'
 
     caller.list.forEach((movie) => {
         

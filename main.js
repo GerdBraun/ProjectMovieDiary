@@ -190,6 +190,9 @@ class Main {
                 console.log('view')
                 // show detail view
                 this.renderView('details', dataset.caller, dataset.id);
+
+                const detailsContainer = document.querySelector(this.#detailView);
+                detailsContainer.scrollIntoView({ behavior: "smooth" });
                 break;
             case 'add':
                 // add movie to favorites
@@ -197,7 +200,10 @@ class Main {
                 event.currentTarget.classList.add('active')
                 this.#movieFavoritesList.addMovie(movie);
 
-                this.renderView('movieFavoritesList')
+                this.renderView('movieFavoritesList');
+
+                const favsContainer = document.querySelector(this.#movieFavoritesListView);
+                favsContainer.scrollIntoView({ behavior: "smooth" });
                 break;
             case 'remove':
                 // remove movies from favorites
