@@ -250,10 +250,12 @@ export const renderDetailsView = (caller, pathToImages) => {
     title.textContent = caller.data.title;
     divR.appendChild(title);
 
-    const originalTitle = document.createElement('h4');
-    originalTitle.classList = 'text-xl text-white'
-    originalTitle.textContent = 'Original title: ' + caller.data.original_title;
-    divR.appendChild(originalTitle);
+    if(caller.data.original_title !== caller.data.title){
+        const originalTitle = document.createElement('h4');
+        originalTitle.classList = 'text-xl text-white'
+        originalTitle.textContent = 'Original title: ' + caller.data.original_title;
+        divR.appendChild(originalTitle);
+    }
 
     const overview = document.createElement('p');
     overview.classList = 'text-white my-6'
@@ -380,10 +382,12 @@ export const renderMovieAdditionalDetails = (details) => {
             name.textContent = actor.name;
             li.appendChild(name);
 
-            const character = document.createElement('p');
-            character.classList = 'text-xs';
-            character.textContent = 'as ' + actor.character;
-            li.appendChild(character);
+            if(actor.character){
+                const character = document.createElement('p');
+                character.classList = 'text-xs';
+                character.textContent = 'as ' + actor.character;
+                li.appendChild(character);
+            }
 
             ul.appendChild(li);
         }

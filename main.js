@@ -274,6 +274,7 @@ class Main {
         if(results.length){
             // clear the movie list;
             this.#movieList.list = [];
+            this.#movieFavoritesList.list = [];
             this.populateMovieList(results);
         }else{
             alert(`nothing found searching for "${searchTerm}"`);
