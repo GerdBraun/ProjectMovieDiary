@@ -116,9 +116,24 @@ class Main {
             // add the movie instance to the list
             this.#movieList.addMovie(movie);
         });
-        //this.#movieList.renderView();
+        this.renderView('movieList');
 
-        this.renderView('movieList', 1745);
+
+        // not so elegant, but working... ?
+        const movieFavList = this.#movieFavoritesList.getListFromLocalStorage();
+        this.populateMovieFavoritesList(movieFavList);
+    }
+
+    populateMovieFavoritesList(arr=[]){
+        console.info('populating the movieFavoritesList')
+        arr.forEach(movieObject => {
+            // create new instance of Movie (and pass the data object)
+            const movie = new Movie(movieObject);
+            movie.mainInstance = this;
+            // add the movie instance to the list
+            this.#movieFavoritesList.addMovie(movie, false);
+        });
+        this.renderView('movieFavoritesList');
     }
 
     /**
@@ -186,6 +201,12 @@ class Main {
                 break;
             case 'remove':
                 // remove movies from favorites
+                const movieR = this.#movieList.getMovieById(dataset.id);
+                if(confirm(`really remove "${movieR.data.title}"?`)){
+
+                    this.#movieFavoritesList.removeMovie(movieR);
+                    this.renderView('movieFavoritesList')
+                }
                 break;
 
             // comments (commentId needed in dataset)
@@ -205,15 +226,20 @@ class Main {
                 event.preventDefault();
                 console.log('adding comment')
                 const movieCAdd = this.#movieFavoritesList.getMovieById(dataset.id);
-                // TODO: use data from input
                 const text = document.querySelector('#commentText').value;
                 if(text !== '') movieCAdd.addComment(text);
+
+                this.#movieFavoritesList.saveListToLocalStorage(this.#movieFavoritesList.list)
+
                 document.querySelector('#modal').classList.add('hidden');
                 break;
             case 'removeComment':
                 const movieCRem = this.#movieFavoritesList.getMovieById(dataset.id);
                 movieCRem.removeCommentById(dataset.commentId);
                 document.querySelector('#modal').classList.add('hidden');
+
+                this.#movieFavoritesList.saveListToLocalStorage(this.#movieFavoritesList.list)
+
                 break;
 
             // search

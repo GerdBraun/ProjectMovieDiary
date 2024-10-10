@@ -14,8 +14,11 @@ export const fetchInitial = (caller) => {
         // and then use the response data to to what we need
         .then(response => {
             console.info('finished loading initial data')
+
             // populate the  MovieList (the actual array of movies is stored in 'results')
-            caller.populateMovieList(response.results)
+            caller.populateMovieList(response.results);
+            
+            return(response.results)
         })
         // and show errors if encounteered
         .catch(err => console.error(err));

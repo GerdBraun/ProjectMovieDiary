@@ -12,8 +12,6 @@ export class MovieFavoritesList extends MovieList {
     constructor() {
         // initiate the super class (MovieList), so this has everything from there
         super();
-
-        this.getListFromLocalStorage();
     }
 
     // getters & setters
@@ -28,15 +26,26 @@ export class MovieFavoritesList extends MovieList {
      * adds a movie to the list (overwrites the corresponding MovieList method)
      * @param {Movie} movie the movie to add
      */
-    addMovie(movie){
+    addMovie(movie, save=true){
         console.log(`movie "${movie.data.title}" was added to the MovieFavoritesList`);
-        // TODO: prevent adding a movie already existing
-        if(!checkInStorage(movie, this.localStorageName)){
-            this.list.push(movie);
-            // TODO: add it to the local storage
+        
+        if(save){
+            if(!checkInStorage(movie, this.localStorageName)){
+                this.list.push(movie);
+                addToStorage(movie, this.localStorageName)
+            }else{
+                alert('movie already added to favorites')
+            }
         }else{
-            alert('movie already added to favorites')
+            console.log(movie)
+            this.list.push(movie);
         }
+    }
+
+    removeMovie(movie){
+        const newlist = this.list.filter((item) => item.id !== movie.data.id);
+        this.list = newlist;
+        this.saveListToLocalStorage(this.list);
     }
 
     /**
@@ -44,8 +53,8 @@ export class MovieFavoritesList extends MovieList {
      * @param {Array} arr the array to save
      */
     saveListToLocalStorage(arr) {
-        //localStorage.setItem(this.localStorageName, JSON.stringify(arr));
-        saveListToLocalStorage(this.localStorageName, arr);
+        const arrToSave = arr.map((movie) => movie.data)
+        saveListToLocalStorage(this.localStorageName, arrToSave);
     }
 
     /**
@@ -53,8 +62,10 @@ export class MovieFavoritesList extends MovieList {
      * @returns an array of movie (objects) from the local storage 
      */
     getListFromLocalStorage() {
-        //return JSON.parse(localStorage.getItem(this.localStorageName)) || [];
-        return getListFromLocalStorage(this.localStorageName);
+        const list =  getListFromLocalStorage(this.localStorageName);
+        console.log('getListFromLocalStorage: ',list);
+
+        return list
     }
 
     /**
