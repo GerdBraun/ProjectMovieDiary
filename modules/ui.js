@@ -363,11 +363,12 @@ export const renderMovieAdditionalDetails = (details) => {
     out.appendChild(castTitle);
 
     const ul = document.createElement('ul');
-    ul.classList = 'grid grid-cols-6 gap-8';
+    ul.classList = 'w-full md:flex md:gap-8 md:overflow-x-scroll md:max-w-screen-md';
     details.credits.cast.forEach((actor) => {
         if (actor.profile_path) {
 
             const li = document.createElement('li');
+            li.classList = 'max-w-32 flex-none';
 
             const img = document.createElement('img');
             img.src = `https://media.themoviedb.org/t/p/w276_and_h350_face/${actor.profile_path}`;
