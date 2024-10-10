@@ -16,6 +16,7 @@ export class Movie {
     constructor(movieObject) {
         // build a new Movie based on the dataObject
         this.data = movieObject || {};
+        this.data.commentsList = [];
     }
 
     // getters & setters
@@ -52,7 +53,7 @@ export class Movie {
 
         try {
             this.details = await fetchMovieDetails(this.data.id);
-            console.log('Movie: fetchMovieDetails -> ',this.details)
+            console.log('Movie: fetchMovieDetails -> ', this.details)
             return this.details;
         } catch (e) {
             console.error(e)
@@ -69,5 +70,32 @@ export class Movie {
         this.fetchMovieDetails();
 
         return renderDetailsView(this, pathToImages)
+    }
+
+
+    // comments
+
+    get commentsList() {
+        return this.data.commentsList
+    }
+    set commentsList(arr) {
+        this.data.commentsList = arr;
+    }
+
+    addComment(text) {
+        console.log(text);
+        const commentObj = {
+            id: crypto.randomUUID(),
+            timestamp: Date.now(),
+            text: text,
+        }
+        this.data.commentsList.unshift(commentObj);
+    }
+
+    removeCommentById(id) {
+
+        console.log('remove comment ',id);
+        this.data.commentsList  = this.data.commentsList.filter((comment) => comment.id !== id);
+        console.log(this.data.commentsList);
     }
 }

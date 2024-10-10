@@ -1,12 +1,12 @@
-import {initialData} from './modules/initialData.js';
+import { initialData } from './modules/initialData.js';
 
-import { renderListView, renderFavoritesListView, renderDetailsView } from './modules/ui.js';
+import { renderListView, renderFavoritesListView, renderDetailsView, renderModalComments } from './modules/ui.js';
 import { saveListToLocalStorage, getListFromLocalStorage } from './modules/storage.js';
 import { fetchInitial, fetchMovieDetails } from './modules/network.js';
 
-import {Movie} from './modules/classes/Movie.js';
-import {MovieList} from './modules/classes/MovieList.js';
-import {MovieFavoritesList} from './modules/classes/MovieFavoritesList.js';
+import { Movie } from './modules/classes/Movie.js';
+import { MovieList } from './modules/classes/MovieList.js';
+import { MovieFavoritesList } from './modules/classes/MovieFavoritesList.js';
 
 
 
@@ -184,6 +184,34 @@ class Main {
             case 'remove':
                 // remove movies from favorites
                 break;
+
+            // comments (commentId needed in dataset)
+            case 'openCommentModal':
+                const movieCView = this.#movieFavoritesList.getMovieById(dataset.id);
+
+                const modal = document.querySelector('#modal');
+                modal.querySelector('#modal-title').textContent = `Movie "${movieCView.data.title}" comments`;
+
+                const modalContent = renderModalComments(this.#movieFavoritesList, movieCView);
+                document.querySelector('#modalContent').innerHTML = '';
+                document.querySelector('#modalContent').appendChild(modalContent);
+
+                modal.classList.remove('hidden');
+                break;
+            case 'addComment':
+                event.preventDefault();
+                console.log('adding comment')
+                const movieCAdd = this.#movieFavoritesList.getMovieById(dataset.id);
+                // TODO: use data from input
+                const text = document.querySelector('#commentText').value;
+                if(text !== '') movieCAdd.addComment(text);
+                document.querySelector('#modal').classList.add('hidden');
+                break;
+            case 'removeComment':
+                const movieCRem = this.#movieFavoritesList.getMovieById(dataset.id);
+                movieCRem.removeCommentById(dataset.commentId);
+                document.querySelector('#modal').classList.add('hidden');
+                break;
             default:
         }
     }
@@ -193,7 +221,7 @@ class Main {
 const mainInstance = new Main();
 
 // add initial data  to main 
-for(let key in initialData){
+for (let key in initialData) {
     mainInstance[key] = initialData[key]
 }
 
