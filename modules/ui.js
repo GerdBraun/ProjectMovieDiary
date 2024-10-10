@@ -252,7 +252,7 @@ export const renderDetailsView = (caller, pathToImages) => {
 
     const originalTitle = document.createElement('h4');
     originalTitle.classList = 'text-xl text-white'
-    originalTitle.textContent = 'Original title: '+caller.data.original_title;
+    originalTitle.textContent = 'Original title: ' + caller.data.original_title;
     divR.appendChild(originalTitle);
 
     const overview = document.createElement('p');
@@ -342,4 +342,42 @@ export const renderModalComments = (caller, movie) => {
     div.appendChild(ul);
 
     return div
+}
+
+export const renderMovieAdditionalDetails = (details) => {
+    const out = document.createElement('div');
+
+    const castTitle = document.createElement('h4');
+    castTitle.textContent = 'Cast';
+    castTitle.classList = 'text-xl';
+    out.appendChild(castTitle);
+
+    const ul = document.createElement('ul');
+    ul.classList = 'grid grid-cols-6 gap-8';
+    details.credits.cast.forEach((actor) => {
+        if (actor.profile_path) {
+
+            const li = document.createElement('li');
+
+            const img = document.createElement('img');
+            img.src = `https://media.themoviedb.org/t/p/w276_and_h350_face/${actor.profile_path}`;
+            img.alt = actor.name
+            li.appendChild(img);
+
+            const name = document.createElement('h5');
+            name.classList = 'text-sm';
+            name.textContent = actor.name;
+            li.appendChild(name);
+
+            const character = document.createElement('p');
+            character.classList = 'text-xs';
+            character.textContent = 'as ' + actor.character;
+            li.appendChild(character);
+
+            ul.appendChild(li);
+        }
+    })
+    out.appendChild(ul);
+
+    return out;
 }
