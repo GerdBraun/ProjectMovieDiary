@@ -24,15 +24,16 @@ export const fetchInitial = (caller) => {
         .catch(err => console.error(err));
 }
 
-export const fetchMovieDetails = (id) => {
+export const fetchMovieDetails = (caller, id) => {
     // TODO: use real data!
     const url = `https://api.themoviedb.org/3/movie/${id}?language=en-US&api_key=153a09fbeef547fb0435feeeb75d0140&append_to_response=credits`;
     const results = fetch(url)
         .then(response => response.json())
         .then(response => {
-            console.info('finished loading getMovieDetails')
+            //console.info('finished loading getMovieDetails')
             console.log('network.js: fetchMovieDetails -> ', response)
 
+            caller.populateMovieDetails(response);
             return response;
         })
         // and show errors if encounteered

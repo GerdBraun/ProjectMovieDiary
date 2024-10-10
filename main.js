@@ -183,10 +183,11 @@ class Main {
      * @param {Event} event 
      */
     eventHandler(event) {
-        const dataset = event.target.dataset;
-        console.log(dataset.action)
+        const dataset = event.currentTarget.dataset;
+        console.log(event)
         switch (dataset.action) {
             case 'view':
+                console.log('view')
                 // show detail view
                 this.renderView('details', dataset.caller, dataset.id);
                 break;
