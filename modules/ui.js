@@ -263,7 +263,7 @@ export const renderDetailsView = (caller, pathToImages) => {
 
 
     const details = document.createElement('div');
-    details.id = 'details';
+    details.id = 'additionalMovieDetails';
     details.classList = 'text-white my-6'
     details.textContent = 'details';
     divR.appendChild(details);

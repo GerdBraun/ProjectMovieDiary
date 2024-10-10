@@ -50,15 +50,25 @@ export class Movie {
     async fetchMovieDetails() {
         // TODO: fetch the detail data
         // url-example: 'https://api.themoviedb.org/3/movie/533535?language=en-US&api_key=153a09fbeef547fb0435feeeb75d0140'
+        this.details = fetchMovieDetails(this, this.data.id);
+    }
 
-        try {
-            this.details = await fetchMovieDetails(this.data.id);
-            console.log('Movie: fetchMovieDetails -> ', this.details)
-            return this.details;
-        } catch (e) {
-            console.error(e)
-        }
+    populateMovieDetails(details) {
+        this.details = details;
 
+        console.log('Movie.populateMovieDetails -> ', details);
+
+        // add more details
+        const detailsContainer = document.querySelector('#additionalMovieDetails');
+        detailsContainer.textContent = 'here'
+
+
+        const actorsList = details.credits.cast.map((actor) => {
+            return `${actor.name} as ${actor.character}`;
+        })
+
+        const actors = actorsList.join(', ');
+        detailsContainer.textContent = actors
     }
 
     /**
@@ -94,8 +104,8 @@ export class Movie {
 
     removeCommentById(id) {
 
-        console.log('remove comment ',id);
-        this.data.commentsList  = this.data.commentsList.filter((comment) => comment.id !== id);
+        console.log('remove comment ', id);
+        this.data.commentsList = this.data.commentsList.filter((comment) => comment.id !== id);
         console.log(this.data.commentsList);
     }
 }
