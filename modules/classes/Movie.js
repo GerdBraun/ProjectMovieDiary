@@ -1,4 +1,4 @@
-import { renderListView, renderFavoritesListView, renderDetailsView } from '../ui.js';
+import { renderListView, renderFavoritesListView, renderDetailsView,renderMovieAdditionalDetails } from '../ui.js';
 import { saveListToLocalStorage, getListFromLocalStorage } from '../storage.js';
 import { fetchInitial, fetchMovieDetails } from '../network.js';
 
@@ -60,15 +60,11 @@ export class Movie {
 
         // add more details
         const detailsContainer = document.querySelector('#additionalMovieDetails');
-        detailsContainer.textContent = 'here'
+        detailsContainer.innerHTML = '';
+        
+        const out = renderMovieAdditionalDetails(details);
 
-
-        const actorsList = details.credits.cast.map((actor) => {
-            return `${actor.name} as ${actor.character}`;
-        })
-
-        const actors = actorsList.join(', ');
-        detailsContainer.textContent = actors
+        detailsContainer.appendChild(out);
     }
 
     /**

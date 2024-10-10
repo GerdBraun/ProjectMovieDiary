@@ -1,7 +1,7 @@
 import {  initialData  } from './modules/initialData.js';
 
 import { renderListView, renderFavoritesListView, renderDetailsView, renderModalComments } from './modules/ui.js';
-import { saveListToLocalStorage, getListFromLocalStorage } from './modules/storage.js';
+import { saveListToLocalStorage, getListFromLocalStorage, checkInStorage } from './modules/storage.js';
 import { fetchInitial, fetchMovieDetails } from './modules/network.js';
 
 import {  Movie  } from './modules/classes/Movie.js';
@@ -190,19 +190,25 @@ class Main {
                 console.log('view')
                 // show detail view
                 this.renderView('details', dataset.caller, dataset.id);
+
+                const detailsContainer = document.querySelector(this.#detailView);
+                detailsContainer.scrollIntoView(true);
                 break;
             case 'add':
                 // add movie to favorites
                 const movie = this.#movieList.getMovieById(dataset.id);
-                console.log(movie);
-
+                event.currentTarget.classList.add('active')
                 this.#movieFavoritesList.addMovie(movie);
 
-                this.renderView('movieFavoritesList')
+                this.renderView('movieFavoritesList');
+
+                const favsContainer = document.querySelector(this.#movieFavoritesListView);
+                favsContainer.scrollIntoView(true);
                 break;
             case 'remove':
                 // remove movies from favorites
-                const movieR = this.#movieList.getMovieById(dataset.id);
+                const movieR = this.#movieFavoritesList.getMovieById(dataset.id);
+                console.log(movieR);
                 if(confirm(`really remove "${movieR.data.title}"?`)){
 
                     this.#movieFavoritesList.removeMovie(movieR);
@@ -273,6 +279,7 @@ class Main {
         if(results.length){
             // clear the movie list;
             this.#movieList.list = [];
+            this.#movieFavoritesList.list = [];
             this.populateMovieList(results);
         }else{
             alert(`nothing found searching for "${searchTerm}"`);

@@ -1,6 +1,7 @@
 // modules/svg.js
 
 import { createPercentageSvg } from './svg.js';
+import { checkInStorage} from './storage.js';
 
 
 /**
@@ -61,10 +62,14 @@ export const renderListView = (caller) => {
     
      */
 
+
     const ul = document.createElement('ul');
-    ul.classList = 'py-8 px-4 lg:px-6 flex gap-8 overflow-x-scroll bg-gray-300'
+    ul.classList = 'py-8 px-4 lg:px-6 flex gap-8 overflow-x-scroll bg-red-900'
 
     caller.list.forEach((movie) => {
+        
+        console.log(movie.data.title+' is fav = '+checkInStorage(movie));
+
         const li = document.createElement('li');
         li.classList = 'card card w-52 max-w-52 flex-none shadow-lg rounded-lg bg-gray-100 relative';
 
@@ -72,7 +77,7 @@ export const renderListView = (caller) => {
         //card.classList = 'card w-30 flex-none shadow-lg rounded-lg bg-gray-100'
 
         const link = document.createElement('button');
-        link.classList = 'action-button relative';
+        link.classList = 'action-button relative  bg-gray-500 rounded-t-lg';
         link.dataset.id = movie.data.id;
         link.dataset.action = 'view';
         link.dataset.caller = caller.constructor.name; // pass the name of the Class
@@ -80,7 +85,7 @@ export const renderListView = (caller) => {
         link.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
 
         const img = document.createElement('img');
-        img.classList = 'rounded-t-lg';
+        img.classList = 'rounded-t-lg hover:opacity-50';
         img.src = 'https://media.themoviedb.org/t/p/w220_and_h330_face' + movie.data.poster_path;
         link.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
         link.appendChild(img);
@@ -102,13 +107,16 @@ export const renderListView = (caller) => {
         const addBtn = document.createElement('button');
         addBtn.classList = 'action-button w-10 h-10 absolute top-[-1rem] right-[-1rem]';
         //addBtn.textContent = 'add';
-        addBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 245">
-<path d="m56,237 74-228 74,228L10,96h240" fill="#c82c2c"/>
+        addBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 245" fill="#c82c2c">
+<path d="m56,237 74-228 74,228L10,96h240"/>
 </svg>`;
         addBtn.dataset.id = movie.data.id;
         addBtn.dataset.action = 'add';
         addBtn.dataset.caller = caller.constructor.name; // pass the name of the Class
         addBtn.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
+        if(checkInStorage(movie)){
+            addBtn.classList.add('active');
+        }
         card.appendChild(addBtn);
 
         const title = document.createElement('h3');
@@ -244,19 +252,25 @@ export const renderDetailsView = (caller, pathToImages) => {
     const divR = document.createElement('div');
     divR.classList = 'flex-1 basis-3/4';
 
-    // TODO: info in here
     const title = document.createElement('h3');
     title.classList = 'text-5xl text-white'
     title.textContent = caller.data.title;
     divR.appendChild(title);
 
-    const originalTitle = document.createElement('h4');
-    originalTitle.classList = 'text-xl text-white'
-    originalTitle.textContent = 'Original title: '+caller.data.original_title;
-    divR.appendChild(originalTitle);
+    if(caller.data.original_title !== caller.data.title){
+        const originalTitle = document.createElement('h4');
+        originalTitle.classList = 'text-xl text-white'
+        originalTitle.textContent = 'Original title: ' + caller.data.original_title;
+        divR.appendChild(originalTitle);
+    }
 
-    const overview = document.createElement('p');
-    overview.classList = 'text-white my-6'
+    const overviewTitle = document.createElement('h4');
+    overviewTitle.textContent = 'Overview:';
+    overviewTitle.classList = 'text-white text-xl mt-5 mb-2';
+    divR.appendChild(overviewTitle);
+
+   const overview = document.createElement('p');
+    overview.classList = 'text-white mb-6'
     overview.textContent = caller.data.overview;
     divR.appendChild(overview);
 
@@ -342,4 +356,56 @@ export const renderModalComments = (caller, movie) => {
     div.appendChild(ul);
 
     return div
+}
+
+export const renderMovieAdditionalDetails = (details) => {
+    const out = document.createElement('div');
+
+    if(details.homepage){
+        const link = document.createElement('a');
+        link.classList = 'block mb-6 hover:text-gray-300';
+        link.href = details.homepage;
+        link.target = '_blank';
+        link.textContent = 'Homepage >';
+        out.appendChild(link);
+    }
+
+
+    const castTitle = document.createElement('h4');
+    castTitle.textContent = 'Cast:';
+    castTitle.classList = 'text-xl mb-2';
+    out.appendChild(castTitle);
+
+    const ul = document.createElement('ul');
+    ul.classList = 'w-full md:flex md:gap-8 md:overflow-x-scroll md:max-w-screen-md';
+    details.credits.cast.forEach((actor) => {
+        if (actor.profile_path) {
+
+            const li = document.createElement('li');
+            li.classList = 'max-w-32 flex-none';
+
+            const img = document.createElement('img');
+            img.src = `https://media.themoviedb.org/t/p/w276_and_h350_face/${actor.profile_path}`;
+            img.alt = actor.name
+            li.appendChild(img);
+
+            const name = document.createElement('h5');
+            name.classList = 'text-sm';
+            name.textContent = actor.name;
+            li.appendChild(name);
+
+            if(actor.character){
+                const character = document.createElement('p');
+                character.classList = 'text-xs';
+                character.textContent = 'as ' + actor.character;
+                li.appendChild(character);
+            }
+
+            ul.appendChild(li);
+        }
+    })
+
+    out.appendChild(ul);
+
+    return out;
 }
