@@ -87,7 +87,11 @@ export const renderListView = (caller) => {
 
         const img = document.createElement('img');
         img.classList = 'rounded-t-lg hover:opacity-50';
-        img.src = 'https://media.themoviedb.org/t/p/w220_and_h330_face' + movie.data.poster_path;
+        if(movie.data.poster_path){
+            img.src = 'https://media.themoviedb.org/t/p/w220_and_h330_face' + movie.data.poster_path;
+        }else{
+            img.src = 'https://placehold.co/220x330?text=no%20image%20available';
+        }
         link.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
         link.appendChild(img);
 
@@ -117,7 +121,7 @@ export const renderListView = (caller) => {
         if (checkInStorage(movie)) {
             addBtn.classList.add('active');
             addBtn.dataset.action = 'remove';
-        }else{
+        } else {
             addBtn.dataset.action = 'add';
         }
         card.appendChild(addBtn);
@@ -247,7 +251,11 @@ export const renderDetailsView = (caller, pathToImages) => {
     const divL = document.createElement('div');
     divL.classList = 'flex-1 basis-1/4';
     const img = document.createElement('img');
-    img.src = `https://media.themoviedb.org/t/p/w300_and_h450_bestv2/${caller.data.poster_path}`;
+    if (caller.data.poster_path) {
+        img.src = `https://media.themoviedb.org/t/p/w300_and_h450_bestv2/${caller.data.poster_path}`;
+    } else {
+        img.src = `https://placehold.co/300x450?text=no%20image%20available`;
+    }
     img.alt = caller.data.title;
     divL.appendChild(img);
     innerDiv.appendChild(divL);
@@ -384,12 +392,14 @@ export const renderMovieAdditionalDetails = (details) => {
     const dirWrapper = document.createElement('div');
     dirWrapper.classList = 'max-w-32 mb-2';
 
+    const img = document.createElement('img');
     if (director.profile_path) {
-        const img = document.createElement('img');
         img.src = `https://media.themoviedb.org/t/p/w276_and_h350_face/${director.profile_path}`;
-        img.alt = director.name;
-        dirWrapper.appendChild(img);
+    } else {
+        img.src = `https://placehold.co/276x350?text=no%20image%20available`;
     }
+    img.alt = director.name;
+    dirWrapper.appendChild(img);
 
     const directorName = document.createElement('h5');
     directorName.textContent = director.name;
@@ -424,30 +434,32 @@ export const renderMovieAdditionalDetails = (details) => {
     const ul = document.createElement('ul');
     ul.classList = 'w-full md:flex md:gap-8 md:overflow-x-scroll md:max-w-screen-md';
     details.credits.cast.forEach((actor) => {
+
+        const li = document.createElement('li');
+        li.classList = 'max-w-32 flex-none';
+
+        const img = document.createElement('img');
         if (actor.profile_path) {
-
-            const li = document.createElement('li');
-            li.classList = 'max-w-32 flex-none';
-
-            const img = document.createElement('img');
             img.src = `https://media.themoviedb.org/t/p/w276_and_h350_face/${actor.profile_path}`;
-            img.alt = actor.name;
-            li.appendChild(img);
-
-            const name = document.createElement('h5');
-            name.classList = 'text-sm';
-            name.textContent = actor.name;
-            li.appendChild(name);
-
-            if (actor.character) {
-                const character = document.createElement('p');
-                character.classList = 'text-xs';
-                character.textContent = 'as ' + actor.character;
-                li.appendChild(character);
-            }
-
-            ul.appendChild(li);
+        } else {
+            img.src = `https://placehold.co/276x350?text=no%20image%20available`;
         }
+        img.alt = actor.name;
+        li.appendChild(img);
+
+        const name = document.createElement('h5');
+        name.classList = 'text-sm';
+        name.textContent = actor.name;
+        li.appendChild(name);
+
+        if (actor.character) {
+            const character = document.createElement('p');
+            character.classList = 'text-xs';
+            character.textContent = 'as ' + actor.character;
+            li.appendChild(character);
+        }
+
+        ul.appendChild(li);
     })
 
     out.appendChild(ul);
