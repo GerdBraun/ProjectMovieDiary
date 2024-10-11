@@ -170,7 +170,7 @@ export const renderFavoritesListView = (caller) => {
         const viewBtn = document.createElement('button');
         viewBtn.classList = 'action-button movie-button movie-button-green';
         //viewBtn.textContent = 'view';
-        viewBtn.innerHTML = '&#x1f441;';
+        viewBtn.innerHTML = '&#x2609;';
         viewBtn.dataset.id = movie.data.id;
         viewBtn.dataset.action = 'view';
         viewBtn.dataset.caller = caller.constructor.name; // pass the name of the Class
@@ -180,7 +180,7 @@ export const renderFavoritesListView = (caller) => {
         const removeBtn = document.createElement('button');
         removeBtn.classList = 'action-button movie-button movie-button-red';
         //removeBtn.textContent = 'remove';
-        removeBtn.innerHTML = '&#10006;'
+        removeBtn.innerHTML = '&#10005;'
         removeBtn.dataset.id = movie.data.id;
         removeBtn.dataset.action = 'remove';
         removeBtn.dataset.caller = caller.constructor.name; // pass the name of the Class
@@ -191,7 +191,7 @@ export const renderFavoritesListView = (caller) => {
         const commentOpenModal = document.createElement('button');
         commentOpenModal.classList = 'action-button movie-button movie-button-green';
         //viewBtn.textContent = 'view';
-        commentOpenModal.innerHTML = '&#x1f441;';
+        commentOpenModal.innerHTML = '&#9776;';
         commentOpenModal.dataset.id = movie.data.id;
         commentOpenModal.dataset.action = 'openCommentModal';
         commentOpenModal.dataset.caller = caller.constructor.name; // pass the name of the Class
