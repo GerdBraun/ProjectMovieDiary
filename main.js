@@ -1,12 +1,12 @@
-import {  initialData  } from './modules/initialData.js';
+import { initialData } from './modules/initialData.js';
 
 import { renderListView, renderFavoritesListView, renderDetailsView, renderModalComments } from './modules/ui.js';
 import { saveListToLocalStorage, getListFromLocalStorage, checkInStorage } from './modules/storage.js';
 import { fetchInitial, fetchMovieDetails } from './modules/network.js';
 
-import {  Movie  } from './modules/classes/Movie.js';
-import {  MovieList  } from './modules/classes/MovieList.js';
-import {  MovieFavoritesList  } from './modules/classes/MovieFavoritesList.js';
+import { Movie } from './modules/classes/Movie.js';
+import { MovieList } from './modules/classes/MovieList.js';
+import { MovieFavoritesList } from './modules/classes/MovieFavoritesList.js';
 
 
 
@@ -124,7 +124,7 @@ class Main {
         this.populateMovieFavoritesList(movieFavList);
     }
 
-    populateMovieFavoritesList(arr=[]){
+    populateMovieFavoritesList(arr = []) {
         console.info('populating the movieFavoritesList')
         arr.forEach(movieObject => {
             // create new instance of Movie (and pass the data object)
@@ -204,16 +204,32 @@ class Main {
 
                 const favsContainer = document.querySelector(this.#movieFavoritesListView);
                 favsContainer.scrollIntoView(true);
+
+                event.currentTarget.dataset.action = 'remove';
+                const btnsAdd = document.querySelectorAll(`button[data-action="add"][data-id="${dataset.id}"]`);
+                btnsAdd.forEach((btn) => {
+                    btn.classList.add('active');
+                    btn.dataset.action = 'remove';
+                })
+               
                 break;
             case 'remove':
                 // remove movies from favorites
                 const movieR = this.#movieFavoritesList.getMovieById(dataset.id);
                 console.log(movieR);
-                if(confirm(`really remove "${movieR.data.title}"?`)){
+                if (confirm(`really remove "${movieR.data.title}" from your favorites?`)) {
 
                     this.#movieFavoritesList.removeMovie(movieR);
                     this.renderView('movieFavoritesList')
                 }
+
+                const btnsRemove = document.querySelectorAll(`button[data-action="remove"][data-id="${dataset.id}"]`);
+                btnsRemove.forEach((btn) => {
+                    btn.classList.remove('active');
+                    btn.dataset.action = 'add';
+                })
+
+
                 break;
 
             // comments (commentId needed in dataset)
@@ -234,7 +250,7 @@ class Main {
                 console.log('adding comment')
                 const movieCAdd = this.#movieFavoritesList.getMovieById(dataset.id);
                 const text = document.querySelector('#commentText').value;
-                if(text !== '') movieCAdd.addComment(text);
+                if (text !== '') movieCAdd.addComment(text);
 
                 this.#movieFavoritesList.saveListToLocalStorage(this.#movieFavoritesList.list)
 
@@ -271,17 +287,17 @@ class Main {
         const rsults = fetch(url)
             .then(response => response.json())
             .then(response => {
-                this.showSearchResults(response.results,searchTerm);
+                this.showSearchResults(response.results, searchTerm);
             })
             .catch(err => console.error(err));
     }
     async showSearchResults(results, searchTerm) {
-        if(results.length){
+        if (results.length) {
             // clear the movie list;
             this.#movieList.list = [];
             this.#movieFavoritesList.list = [];
             this.populateMovieList(results);
-        }else{
+        } else {
             alert(`nothing found searching for "${searchTerm}"`);
         }
     }

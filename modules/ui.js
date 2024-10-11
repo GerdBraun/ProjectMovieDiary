@@ -1,7 +1,7 @@
 // modules/svg.js
 
 import { createPercentageSvg } from './svg.js';
-import { checkInStorage} from './storage.js';
+import { checkInStorage } from './storage.js';
 
 
 /**
@@ -67,10 +67,11 @@ export const renderListView = (caller) => {
     ul.classList = 'py-8 px-4 lg:px-6 flex gap-8 overflow-x-scroll bg-red-900'
 
     caller.list.forEach((movie) => {
-        
-        console.log(movie.data.title+' is fav = '+checkInStorage(movie));
+
+        console.log(movie.data.title + ' is fav = ' + checkInStorage(movie));
 
         const li = document.createElement('li');
+        li.id = 'movie-' + movie.id;
         li.classList = 'card card w-52 max-w-52 flex-none shadow-lg rounded-lg bg-gray-100 relative';
 
         const card = document.createElement('div');
@@ -111,11 +112,13 @@ export const renderListView = (caller) => {
 <path d="m56,237 74-228 74,228L10,96h240"/>
 </svg>`;
         addBtn.dataset.id = movie.data.id;
-        addBtn.dataset.action = 'add';
         addBtn.dataset.caller = caller.constructor.name; // pass the name of the Class
         addBtn.addEventListener('click', (event) => caller.mainInstance.eventHandler(event));
-        if(checkInStorage(movie)){
+        if (checkInStorage(movie)) {
             addBtn.classList.add('active');
+            addBtn.dataset.action = 'remove';
+        }else{
+            addBtn.dataset.action = 'add';
         }
         card.appendChild(addBtn);
 
@@ -257,7 +260,7 @@ export const renderDetailsView = (caller, pathToImages) => {
     title.textContent = caller.data.title;
     divR.appendChild(title);
 
-    if(caller.data.original_title !== caller.data.title){
+    if (caller.data.original_title !== caller.data.title) {
         const originalTitle = document.createElement('h4');
         originalTitle.classList = 'text-xl text-white'
         originalTitle.textContent = 'Original title: ' + caller.data.original_title;
@@ -269,7 +272,7 @@ export const renderDetailsView = (caller, pathToImages) => {
     overviewTitle.classList = 'text-white text-xl mt-5 mb-2';
     divR.appendChild(overviewTitle);
 
-   const overview = document.createElement('p');
+    const overview = document.createElement('p');
     overview.classList = 'text-white mb-6'
     overview.textContent = caller.data.overview;
     divR.appendChild(overview);
@@ -361,7 +364,7 @@ export const renderModalComments = (caller, movie) => {
 export const renderMovieAdditionalDetails = (details) => {
     const out = document.createElement('div');
 
-    if(details.homepage){
+    if (details.homepage) {
         const link = document.createElement('a');
         link.classList = 'block mb-6 hover:text-gray-300';
         link.href = details.homepage;
@@ -369,6 +372,48 @@ export const renderMovieAdditionalDetails = (details) => {
         link.textContent = 'Homepage >';
         out.appendChild(link);
     }
+
+    const directorTitle = document.createElement('h4');
+    directorTitle.textContent = 'Director:';
+    directorTitle.classList = 'text-xl mb-2';
+    out.appendChild(directorTitle);
+
+    const director = details.credits.crew.find((member) => member.department === "Directing");
+    console.log(director);
+
+    const dirWrapper = document.createElement('div');
+    dirWrapper.classList = 'max-w-32 mb-2';
+
+    if (director.profile_path) {
+        const img = document.createElement('img');
+        img.src = `https://media.themoviedb.org/t/p/w276_and_h350_face/${director.profile_path}`;
+        img.alt = director.name;
+        dirWrapper.appendChild(img);
+    }
+
+    const directorName = document.createElement('h5');
+    directorName.textContent = director.name;
+    dirWrapper.appendChild(directorName);
+
+    out.appendChild(dirWrapper);
+
+
+    // genres
+    const genreTitle = document.createElement('h4');
+    genreTitle.textContent = 'Genres:';
+    genreTitle.classList = 'text-xl mb-2';
+    out.appendChild(genreTitle);
+
+    const genreWrapper = document.createElement('div');
+    genreWrapper.classList = 'flew flex-wrap'
+    details.genres.forEach((g) => {
+        const genre = document.createElement('span');
+        genre.classList = 'px-2 py-0.5 m-1 bg-gray-500 rounded'
+        genre.textContent = g.name;
+        genreWrapper.appendChild(genre);
+        console.log(g.name)
+    })
+    out.appendChild(genreWrapper);
 
 
     const castTitle = document.createElement('h4');
@@ -386,7 +431,7 @@ export const renderMovieAdditionalDetails = (details) => {
 
             const img = document.createElement('img');
             img.src = `https://media.themoviedb.org/t/p/w276_and_h350_face/${actor.profile_path}`;
-            img.alt = actor.name
+            img.alt = actor.name;
             li.appendChild(img);
 
             const name = document.createElement('h5');
@@ -394,7 +439,7 @@ export const renderMovieAdditionalDetails = (details) => {
             name.textContent = actor.name;
             li.appendChild(name);
 
-            if(actor.character){
+            if (actor.character) {
                 const character = document.createElement('p');
                 character.classList = 'text-xs';
                 character.textContent = 'as ' + actor.character;
